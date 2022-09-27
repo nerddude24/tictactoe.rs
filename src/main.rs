@@ -9,35 +9,10 @@ enum Choice {
     SCISSORS,
 }
 
-fn main() {
-    let mut rng = thread_rng();
-
-    println!("Welcome to TicTacToe.rs!");
-
-    loop {
-        println!("Your choice? (rock, paper, scissors)");
-
-        let cpu_choice = match rng.gen_range(0..=2) {
-            0 => Choice::PAPER,
-            1 => Choice::ROCK,
-            _ => Choice::SCISSORS,
-        };
-
-        let player_choice = match get_player_choice() {
-            Err(err) => {
-                println!("{}", err);
-                continue;
-            }
-            Ok(c) => c,
-        };
-
-        check_winner(cpu_choice, player_choice);
-    }
-}
-
 fn lose() {
     println!("I win!")
 }
+
 fn win() {
     println!("you win...")
 }
@@ -93,5 +68,31 @@ fn get_player_choice() -> Result<Choice, &'static str> {
         _ => {
             return Err("INVALID ANSWER (rock/paper/scissors)");
         }
+    }
+}
+
+fn main() {
+    let mut rng = thread_rng();
+
+    println!("Welcome to TicTacToe.rs!");
+
+    loop {
+        println!("Your choice? (rock, paper, scissors)");
+
+        let cpu_choice = match rng.gen_range(0..=2) {
+            0 => Choice::PAPER,
+            1 => Choice::ROCK,
+            _ => Choice::SCISSORS,
+        };
+
+        let player_choice = match get_player_choice() {
+            Err(err) => {
+                println!("{}", err);
+                continue;
+            }
+            Ok(c) => c,
+        };
+
+        check_winner(cpu_choice, player_choice);
     }
 }
