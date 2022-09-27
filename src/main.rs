@@ -22,6 +22,7 @@ fn main() {
             1 => Choice::ROCK,
             _ => Choice::SCISSORS,
         };
+
         let player_choice = match get_player_choice() {
             Err(err) => {
                 println!("{}", err);
@@ -30,39 +31,7 @@ fn main() {
             Ok(c) => c,
         };
 
-        println!("YOU <{:?}>     VS     I <{:?}>", player_choice, cpu_choice);
-
-        // * Artificial delay
-        thread::sleep(time::Duration::from_secs(1));
-
-        if cpu_choice == player_choice {
-            println!("It's a tie!");
-            continue;
-        }
-
-        match cpu_choice {
-            Choice::ROCK => {
-                if player_choice == Choice::SCISSORS {
-                    lose()
-                } else if player_choice == Choice::PAPER {
-                    win()
-                }
-            }
-            Choice::PAPER => {
-                if player_choice == Choice::ROCK {
-                    lose()
-                } else if player_choice == Choice::SCISSORS {
-                    win()
-                }
-            }
-            Choice::SCISSORS => {
-                if player_choice == Choice::PAPER {
-                    lose()
-                } else if player_choice == Choice::ROCK {
-                    win()
-                }
-            }
-        }
+        check_winner(cpu_choice, player_choice);
     }
 }
 
@@ -73,8 +42,45 @@ fn win() {
     println!("you win...")
 }
 
+fn check_winner(cpu_choice: Choice, player_choice: Choice) {
+    println!("YOU <{:?}>     VS     I <{:?}>", player_choice, cpu_choice);
+
+    // * Artificial delay
+    thread::sleep(time::Duration::from_secs(1));
+
+    if cpu_choice == player_choice {
+        println!("It's a tie!");
+        return;
+    }
+
+    match cpu_choice {
+        Choice::ROCK => {
+            if player_choice == Choice::SCISSORS {
+                lose()
+            } else if player_choice == Choice::PAPER {
+                win()
+            }
+        }
+        Choice::PAPER => {
+            if player_choice == Choice::ROCK {
+                lose()
+            } else if player_choice == Choice::SCISSORS {
+                win()
+            }
+        }
+        Choice::SCISSORS => {
+            if player_choice == Choice::PAPER {
+                lose()
+            } else if player_choice == Choice::ROCK {
+                win()
+            }
+        }
+    }
+}
+
 fn get_player_choice() -> Result<Choice, &'static str> {
     let mut player_input = String::new();
+
     match stdin().read_line(&mut player_input) {
         Ok(_s) => {}
         Err(_e) => return Err("INVALID INPUT"),
