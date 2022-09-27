@@ -62,8 +62,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "tictactoe"
-version = "0.1.0"
+name = "tictactoe-rs"
+version = "1.0.1"
 dependencies = [
  "rand",
 ]
